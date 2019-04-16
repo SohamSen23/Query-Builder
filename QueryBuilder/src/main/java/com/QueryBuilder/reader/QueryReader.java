@@ -1,7 +1,10 @@
 package com.QueryBuilder.reader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class QueryReader {
 
+	private static String baseQuery = "INSERT INTO ";
+	private static final String blank = " ";
 	public void readQuery() {
 
 		try {
@@ -20,8 +25,20 @@ public class QueryReader {
 			// Create Workbook instance holding reference to .xlsx file
 			XSSFWorkbook workbook = new XSSFWorkbook(file);
 
-			// Get first/desired sheet from the workbook
 			XSSFSheet sheet = workbook.getSheetAt(0);
+			String sheetName = sheet.getSheetName();
+			Row colNames = sheet.getRow(0);
+			int numberOfFields = colNames.getPhysicalNumberOfCells();
+			int numberOfQueries = sheet.getPhysicalNumberOfRows();
+			List<String> tableObj = new ArrayList<String>();
+			baseQuery = baseQuery.concat(sheetName).concat(blank);
+			IntStream.range(0, numberOfFields).forEach(colNum -> {
+				baseQuery = baseQuery.concat(colNames.getCell(colNum).toString()).concat(blank);
+			});
+			
+			IntStream.range(0, numberOfQueries).forEach(eachQuery -> {
+				
+			});
 
 			// Iterate through each rows one by one
 			Iterator<Row> rowIterator = sheet.iterator();
