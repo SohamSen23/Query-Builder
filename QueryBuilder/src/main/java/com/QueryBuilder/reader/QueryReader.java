@@ -16,7 +16,12 @@ import org.springframework.stereotype.Service;
 public class QueryReader {
 
 	private static String baseQuery = "INSERT INTO ";
-	private static final String blank = " ";
+	private static final String BLANK = " ";
+	private static final String OPEN_PARANTHESIS = "(";
+	private static final String CLOSE_PARANTHESIS =")";
+	private static final String COMMA =",";
+	private static final String VALUES ="VALUES";
+	private static String eachQuery = null;
 	public void readQuery() {
 
 		try {
@@ -29,15 +34,26 @@ public class QueryReader {
 			String sheetName = sheet.getSheetName();
 			Row colNames = sheet.getRow(0);
 			int numberOfFields = colNames.getPhysicalNumberOfCells();
-			int numberOfQueries = sheet.getPhysicalNumberOfRows();
-			List<String> tableObj = new ArrayList<String>();
-			baseQuery = baseQuery.concat(sheetName).concat(blank);
+			int numberOfRows = sheet.getPhysicalNumberOfRows();
+			List<String> tableObj = new ArrayList<>();
+			baseQuery = baseQuery.concat(sheetName).concat(BLANK).concat(OPEN_PARANTHESIS);
 			IntStream.range(0, numberOfFields).forEach(colNum -> {
-				baseQuery = baseQuery.concat(colNames.getCell(colNum).toString()).concat(blank);
+				baseQuery = baseQuery.concat(colNames.getCell(colNum).toString()).concat(COMMA).concat(BLANK);
 			});
 			
-			IntStream.range(0, numberOfQueries).forEach(eachQuery -> {
-				
+			baseQuery = baseQuery.substring(0, baseQuery.length()-2);
+			baseQuery = baseQuery.concat(CLOSE_PARANTHESIS).concat(BLANK);
+			baseQuery = baseQuery.concat(VALUES);
+			
+			IntStream.range(1, numberOfRows).forEach(eachRowNum -> {
+				Row eachRow = sheet.getRow(eachRowNum);
+				eachQuery = OPEN_PARANTHESIS;
+				IntStream.range(0, numberOfFields).forEach(eachField ->{
+					eachQuery = eachQuery.concat(eachRow.getCell(eachField).toString()).concat(COMMA).concat(BLANK);
+				});
+				eachQuery = eachQuery.substring(0, eachQuery.length()-2);
+				eachQuery = eachQuery.concat(CLOSE_PARANTHESIS);
+				tableObj.add(baseQuery.concat(eachQuery));
 			});
 
 			// Iterate through each rows one by one
