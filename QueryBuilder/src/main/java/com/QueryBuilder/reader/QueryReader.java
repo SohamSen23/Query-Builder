@@ -1,10 +1,5 @@
 package com.QueryBuilder.reader;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -15,8 +10,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
+import com.QueryBuilder.communicator.FileReaderWriter;
 import com.QueryBuilder.constants.QueryBuilderConstants;
 
 @Service
@@ -24,14 +19,15 @@ public class QueryReader {
 
 	@Autowired
 	QueryBuilderConstants QueryBuilderConstants;
+	
+	@Autowired
+	FileReaderWriter fileReaderWriter;
 
 	public void readQuery() {
 
 		try {
-			FileInputStream inputFile = new FileInputStream(new File("C:/Users/DELL/Desktop/Query.xlsx"));
-
-			XSSFWorkbook workbook = new XSSFWorkbook(inputFile);
-
+			
+			XSSFWorkbook workbook = fileReaderWriter.readFile();
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			String sheetName = sheet.getSheetName();
 			Row colNames = sheet.getRow(0);
@@ -69,9 +65,9 @@ public class QueryReader {
 				tableObj.add(QueryBuilderConstants.BASE_QUERY.concat(QueryBuilderConstants.EACH_QUERY));
 			});
 
-			this.writeSQLFile(sheetName, tableObj);
+			fileReaderWriter.writeSQLFile(sheetName, tableObj);
 
-			inputFile.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,21 +89,5 @@ public class QueryReader {
 				.concat(QueryBuilderConstants.BLANK);
 	}
 
-	private void writeSQLFile(String sheetName, List<String> tableObj) throws IOException {
-		String fileName = sheetName.concat(QueryBuilderConstants.DOT).concat(QueryBuilderConstants.VAL_SQL);
-		File outpuFile = new File("C:/Users/DELL/Desktop/".concat(fileName));
-		BufferedWriter writer = new BufferedWriter(new FileWriter(outpuFile));
-
-		if (!CollectionUtils.isEmpty(tableObj)) {
-			tableObj.stream().forEach(eachQuery -> {
-				try {
-					writer.write(eachQuery);
-					writer.newLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
-		}
-		writer.close();
-	}
+	
 }

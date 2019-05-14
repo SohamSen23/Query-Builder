@@ -1,4 +1,4 @@
-package com.QueryBuilder.QueryBuilder.constants;
+package com.QueryBuilder.test.constants;
 
 public class TestConstants {
 
