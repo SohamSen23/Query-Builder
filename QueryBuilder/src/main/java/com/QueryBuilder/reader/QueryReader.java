@@ -17,11 +17,14 @@ import com.QueryBuilder.constants.QueryBuilderConstants;
 @Service
 public class QueryReader {
 
-	@Autowired
-	QueryBuilderConstants QueryBuilderConstants;
 	
 	@Autowired
 	FileReaderWriter fileReaderWriter;
+
+	public List<String> tableObj = new ArrayList<>();
+	public QueryReader(FileReaderWriter fileReaderWriter) {
+		this.fileReaderWriter = fileReaderWriter;
+	}
 
 	public void readQuery() {
 
@@ -34,7 +37,7 @@ public class QueryReader {
 			Row colTypes = sheet.getRow(1);
 			int numberOfFields = colNames.getPhysicalNumberOfCells();
 			int numberOfRows = sheet.getPhysicalNumberOfRows();
-			List<String> tableObj = new ArrayList<>();
+			
 			QueryBuilderConstants.BASE_QUERY = QueryBuilderConstants.BASE_QUERY.concat(sheetName)
 					.concat(QueryBuilderConstants.BLANK).concat(QueryBuilderConstants.OPEN_PARANTHESIS);
 			IntStream.range(0, numberOfFields).forEach(colNum -> {

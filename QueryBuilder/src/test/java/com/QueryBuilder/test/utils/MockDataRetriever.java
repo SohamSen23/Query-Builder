@@ -12,7 +12,6 @@ public class MockDataRetriever {
 
 	public XSSFWorkbook getResponseObject(File inputFile) throws IOException {
 		FileInputStream returnObject = new FileInputStream(inputFile);
-		returnObject.close();
 		return new XSSFWorkbook(returnObject);
 	}
 }

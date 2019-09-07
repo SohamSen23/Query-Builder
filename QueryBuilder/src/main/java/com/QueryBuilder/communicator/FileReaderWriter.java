@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -17,8 +16,6 @@ import com.QueryBuilder.constants.QueryBuilderConstants;
 @Component
 public class FileReaderWriter {
 	
-	@Autowired
-	QueryBuilderConstants QueryBuilderConstants;
 	
 	public XSSFWorkbook readFile() throws IOException {
 		FileInputStream inputFile = new FileInputStream(new File("C:/Users/DELL/Desktop/Query.xlsx"));
