@@ -17,8 +17,8 @@ import com.QueryBuilder.constants.QueryBuilderConstants;
 public class FileReaderWriter {
 	
 	
-	public XSSFWorkbook readFile() throws IOException {
-		FileInputStream inputFile = new FileInputStream(new File("C:/Users/DELL/Desktop/Query.xlsx"));
+	public XSSFWorkbook readFile(String filePath) throws IOException {
+		FileInputStream inputFile = new FileInputStream(new File(filePath)); //"C:/Users/DELL/Desktop/Query.xlsx"
 		XSSFWorkbook workbook = new XSSFWorkbook(inputFile);
 		inputFile.close();
 		return workbook ;

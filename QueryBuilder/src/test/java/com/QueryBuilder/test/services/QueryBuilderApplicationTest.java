@@ -47,9 +47,9 @@ public class QueryBuilderApplicationTest {
 		File mockFile = new File(getClass().getResource(TestConstants.TEST_QUERY).getFile());
 		XSSFWorkbook mockWorkBook = mockDataRetriever
 				.getResponseObject(mockFile);
-		Mockito.when(fileReaderWriter.readFile()).thenReturn(mockWorkBook);
+		//Mockito.when(fileReaderWriter.readFile()).thenReturn(mockWorkBook);
 
-		mockQueryReader.readQuery();
+		//mockQueryReader.readQuery();
 		Object mockTableObj = ReflectionTestUtils.getField(mockQueryReader, "tableObj");
 		
 		assertNotNull(mockTableObj);

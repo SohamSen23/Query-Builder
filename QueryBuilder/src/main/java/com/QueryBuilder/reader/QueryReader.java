@@ -26,11 +26,9 @@ public class QueryReader {
 		this.fileReaderWriter = fileReaderWriter;
 	}
 
-	public void readQuery() {
+	public void readQuery(XSSFWorkbook workbook) {
 
 		try {
-			
-			XSSFWorkbook workbook = fileReaderWriter.readFile();
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			String sheetName = sheet.getSheetName();
 			Row colNames = sheet.getRow(0);
